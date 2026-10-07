@@ -31,11 +31,11 @@
 
    ```powershell
    npx supabase login
-   npx supabase link --project-ref 你的_PROJECT_REF
+   npx supabase link --project-ref zocsjiwkdobmtwrhjhga
    npx supabase functions deploy admin-users
    ```
 
-   `PROJECT_REF` 是 Supabase 專案網址中的代碼。Edge Function 使用 Supabase 伺服器內建的 Secret Key，不要把 Secret Key、Service Role Key 或使用者密碼上傳到 GitHub。
+   Edge Function 使用 Supabase 伺服器內建的 Secret Key，不要把 Secret Key、Service Role Key 或使用者密碼上傳到 GitHub。
 
 6. 在 **Project Settings → API Keys** 取得 **Project URL** 與 **Publishable key**。這兩項是前端公開設定；只能使用 `sb_publishable_...` 開頭的金鑰，不能填 Secret Key。
 
