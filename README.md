@@ -31,8 +31,7 @@
 
    ```powershell
    npx supabase login
-   npx supabase link --project-ref zocsjiwkdobmtwrhjhga
-   npx supabase functions deploy admin-users
+   npx supabase functions deploy admin-users --project-ref zocsjiwkdobmtwrhjhga --use-api
    ```
 
    Edge Function 使用 Supabase 伺服器內建的 Secret Key，不要把 Secret Key、Service Role Key 或使用者密碼上傳到 GitHub。
