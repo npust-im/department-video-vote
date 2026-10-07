@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10182f" />
+    <meta name="description" content="系所映像｜特色影片競賽，觀看參賽作品並投出你的一票。" />
+    <title>系所映像｜特色影片競賽</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="#home" aria-label="系所映像首頁">
+          <span class="brand-icon" aria-hidden="true"><span></span></span>
+          <span class="brand-wordmark">系所<span>映像</span><small>DEPARTMENT IN MOTION</small></span>
+        </a>
+        <nav class="top-nav" aria-label="主要導覽">
+          <a href="#home" id="nav-home" class="nav-link active">首頁</a>
+          <a href="#works" class="nav-link">參賽作品</a>
+          <a href="#admin" id="nav-admin" class="nav-link" hidden>管理後台</a>
+        </nav>
+        <div class="header-account">
+          <span id="user-label" class="user-label" hidden></span>
+          <button id="login-button" class="button button-outline button-small" type="button">登入投票 <span aria-hidden="true">↗</span></button>
+          <button id="logout-button" class="button button-outline button-small" type="button" hidden>登出</button>
+        </div>
+      </header>
+
+      <main id="home">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-dot"></span> 系所特色影片競賽 <span class="eyebrow-rule"></span> VIDEO CONTEST</div>
+            <h1 id="hero-title">看見系所的<br /><em>每一種精彩。</em></h1>
+            <p class="hero-description">從鏡頭出發，認識不同的故事與創意。觀看參賽作品，選出最打動你的那一部影片。</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#works">探索參賽作品 <span aria-hidden="true">↗</span></a>
+              <span class="hero-note"><span class="note-line"></span> 每個帳號限投一票</span>
+            </div>
+            <div class="hero-bottom"><span>SCROLL TO DISCOVER</span><span class="scroll-arrow" aria-hidden="true">↓</span></div>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="art-grid"></div>
+            <div class="orbit orbit-outer"></div>
+            <div class="orbit orbit-inner"></div>
+            <div class="art-circle"><div class="art-play"></div></div>
+            <div class="floating-label floating-top">01 / WATCH</div>
+            <div class="floating-label floating-bottom">02 / VOTE</div>
+            <div class="art-corner art-corner-a"></div><div class="art-corner art-corner-b"></div>
+          </div>
+        </section>
+
+        <section class="intro-band" aria-label="投票步驟">
+          <div><span class="step-number">01</span><span>瀏覽作品</span></div>
+          <span class="band-arrow" aria-hidden="true">↗</span>
+          <div><span class="step-number">02</span><span>觀看影片</span></div>
+          <span class="band-arrow" aria-hidden="true">↗</span>
+          <div><span class="step-number">03</span><span>登入投票</span></div>
+        </section>
+
+        <section id="works" class="works-section" aria-labelledby="works-title">
+          <div class="section-heading">
+            <div><p class="section-kicker">THE ENTRIES <span></span> 參賽作品</p><h2 id="works-title">每一部作品，<br />都值得被看見。</h2></div>
+            <p class="section-side-copy">點選「觀看影片」欣賞作品。登入後選擇最喜歡的影片，送出後即完成投票。</p>
+          </div>
+          <div class="works-toolbar"><span id="work-count">載入作品中...</span><span class="toolbar-line"></span><span>ALL WORKS</span></div>
+          <div id="works-grid" class="works-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="closing-banner">
+          <div><span class="closing-kicker">YOUR VOICE MATTERS</span><h2>你的選擇，<br />讓好作品發光。</h2></div>
+          <div><p>一個帳號只能投一部作品。請先觀看影片，再把這珍貴的一票送給你支持的作品。</p><button id="closing-login" class="button button-light" type="button">前往登入 <span aria-hidden="true">↗</span></button></div>
+        </section>
+
+        <section id="admin" class="admin-section" hidden aria-labelledby="admin-title">
+          <div class="admin-heading"><div><p class="section-kicker">CONTROL ROOM <span></span> 管理員專區</p><h2 id="admin-title">競賽管理後台</h2></div><p>管理參賽作品、投票帳號與投票進度。</p></div>
+          <div class="stats-grid">
+            <div class="stat-card"><span>投票帳號</span><strong id="stat-users">—</strong><small>VOTERS</small></div>
+            <div class="stat-card"><span>參賽作品</span><strong id="stat-options">—</strong><small>ENTRIES</small></div>
+            <div class="stat-card"><span>已投票數</span><strong id="stat-votes">—</strong><small>VOTES CAST</small></div>
+          </div>
+          <div class="admin-grid">
+            <article class="admin-card">
+              <div class="card-heading"><div><span class="card-icon">01</span><h3>Excel 匯入帳號</h3></div><p>第一列欄名：姓名、帳號、密碼</p></div>
+              <form id="excel-form"><label class="upload-box"><input id="excel-file" type="file" accept=".xlsx" required /><span class="upload-symbol">⇧</span><strong>選擇 Excel 檔案</strong><small>支援 .xlsx，會讀取第一個工作表</small><span id="file-name" class="file-name"></span></label><button class="button button-dark" type="submit">匯入使用者 <span aria-hidden="true">↗</span></button></form>
+            </article>
+            <article class="admin-card">
+              <div class="card-heading"><div><span class="card-icon">02</span><h3>手動新增帳號</h3></div><p>可一次加入一筆或多筆</p></div>
+              <form id="manual-users-form"><div class="row-head row-head-users"><span>姓名</span><span>帳號</span><span>密碼</span><span></span></div><div id="manual-user-rows" class="form-rows"></div><div class="form-actions"><button class="text-button" id="add-user-row" type="button">＋ 新增一列</button><button class="button button-dark" type="submit">建立帳號 <span aria-hidden="true">↗</span></button></div></form>
+            </article>
+            <article class="admin-card admin-card-wide">
+              <div class="card-heading"><div><span class="card-icon">03</span><h3>新增投票選項</h3></div><p>每筆填寫作品名稱與影片連結，可一次送出多筆</p></div>
+              <form id="options-form"><div class="row-head row-head-options"><span>作品名稱</span><span>影片連結</span><span></span></div><div id="option-rows" class="form-rows"></div><div class="form-actions"><button class="text-button" id="add-option-row" type="button">＋ 新增一列</button><button class="button button-dark" type="submit">發布選項 <span aria-hidden="true">↗</span></button></div></form>
+            </article>
+          </div>
+          <div class="management-grid">
+            <article class="management-card"><div class="management-heading"><div><span>ACCOUNT LIST</span><h3>使用者帳號</h3></div><input id="user-search" type="search" placeholder="搜尋姓名或帳號" aria-label="搜尋使用者" /></div><div id="users-list" class="list-wrap"></div></article>
+            <article class="management-card"><div class="management-heading"><div><span>LIVE RESULTS</span><h3>作品與票數</h3></div></div><div id="options-list" class="list-wrap"></div></article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer"><span>系所映像 <span class="footer-divider">/</span> 特色影片競賽</span><span>DEPARTMENT IN MOTION © <span id="year"></span></span></footer>
+    </div>
+
+    <dialog id="login-dialog" class="modal"><form id="login-form" class="modal-content"><button class="modal-close" type="button" data-close="login-dialog" aria-label="關閉">×</button><p class="modal-kicker">WELCOME BACK</p><h2>登入，投出你的支持。</h2><p class="modal-copy">使用主辦單位提供的帳號和密碼登入。</p><label>帳號或管理員 Email<input id="login-username" name="username" autocomplete="username" required placeholder="請輸入帳號" /></label><label>密碼<input id="login-password" name="password" type="password" autocomplete="current-password" required placeholder="請輸入密碼" /></label><button class="button button-primary modal-submit" type="submit">登入帳號 <span aria-hidden="true">↗</span></button></form></dialog>
+    <dialog id="edit-dialog" class="modal"><form id="edit-form" class="modal-content"><button class="modal-close" type="button" data-close="edit-dialog" aria-label="關閉">×</button><p class="modal-kicker">EDIT ACCOUNT</p><h2>修改使用者資料</h2><input id="edit-id" type="hidden" /><label>姓名<input id="edit-name" required maxlength="80" /></label><label>帳號<input id="edit-username" required maxlength="64" /></label><label>新密碼 <small>留空則不更改</small><input id="edit-password" type="password" minlength="6" placeholder="至少 6 字元" /></label><button class="button button-primary modal-submit" type="submit">儲存變更 <span aria-hidden="true">↗</span></button></form></dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
