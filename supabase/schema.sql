@@ -1,4 +1,4 @@
--- 在 Supabase SQL Editor 執行一次。管理員帳號的建立步驟見 README。
+-- 在 Supabase SQL Editor 執行；既有專案更新時可重新執行。管理員帳號的建立步驟見 README。
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   name text not null check (char_length(name) between 1 and 80),
@@ -20,6 +20,18 @@ create table if not exists public.votes (
   created_at timestamptz not null default now()
 );
 
+-- 可重複執行；原有帳號會保留，姓名帳號轉換由管理員在後台執行。
+alter table public.profiles drop constraint if exists profiles_username_check;
+alter table public.profiles add constraint profiles_username_check
+  check (char_length(username) between 1 and 80);
+
+create table if not exists public.voting_settings (
+  id integer primary key check (id = 1),
+  closes_at timestamptz
+);
+insert into public.voting_settings (id, closes_at) values (1, null)
+on conflict (id) do nothing;
+
 create index if not exists votes_option_id_idx on public.votes(option_id);
 
 create or replace function public.is_admin()
@@ -33,19 +45,45 @@ as $$
   );
 $$;
 
+create or replace function public.is_voting_open()
+returns boolean
+language sql volatile security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1 from public.voting_settings
+    where id = 1 and (closes_at is null or clock_timestamp() < closes_at)
+  );
+$$;
+
 revoke all on function public.is_admin() from public;
 grant execute on function public.is_admin() to authenticated;
+revoke all on function public.is_voting_open() from public;
+grant execute on function public.is_voting_open() to authenticated;
 
 alter table public.profiles enable row level security;
 alter table public.options enable row level security;
 alter table public.votes enable row level security;
+alter table public.voting_settings enable row level security;
 
 revoke all on public.profiles, public.options, public.votes from anon, authenticated;
+revoke all on public.voting_settings from anon, authenticated;
 grant select on public.profiles to authenticated;
 grant select on public.options to anon, authenticated;
 grant insert on public.options to authenticated;
 grant select, insert on public.votes to authenticated;
 grant usage on sequence public.options_id_seq to authenticated;
+grant select on public.voting_settings to anon, authenticated;
+grant update (closes_at) on public.voting_settings to authenticated;
+
+drop policy if exists "voting_settings_read" on public.voting_settings;
+create policy "voting_settings_read" on public.voting_settings
+for select to anon, authenticated using (true);
+
+drop policy if exists "voting_settings_update_admin" on public.voting_settings;
+create policy "voting_settings_update_admin" on public.voting_settings
+for update to authenticated using ((select public.is_admin()))
+with check ((select public.is_admin()));
 
 drop policy if exists "profiles_read_self_or_admin" on public.profiles;
 create policy "profiles_read_self_or_admin" on public.profiles
@@ -71,6 +109,19 @@ for insert to authenticated
 with check (
   user_id = (select auth.uid())
   and exists (select 1 from public.profiles where id = (select auth.uid()) and role = 'voter')
+  and (select public.is_voting_open())
 );
 
 -- user_id 是 votes 的主鍵，所以資料庫會拒絕第二票；沒有更新與刪除投票的政策。
+
+-- 管理員即時收到投票變更；重複執行此腳本不會重複加入 publication。
+do $$
+begin
+  if exists (select 1 from pg_publication where pubname = 'supabase_realtime')
+    and not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'votes'
+  ) then
+    alter publication supabase_realtime add table public.votes;
+  end if;
+end $$;
